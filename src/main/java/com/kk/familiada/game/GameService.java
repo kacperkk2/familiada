@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,5 +20,11 @@ class GameService {
         return Optional.of(gameRepository.getByUuidOrThrowEntityNotFound(uuid))
                 .map(GameEntity::toDto)
                 .orElse(null);
+    }
+
+    public List<GameDto> getAllGames() {
+        return gameRepository.findAll().stream()
+                .map(GameEntity::toDto)
+                .toList();
     }
 }

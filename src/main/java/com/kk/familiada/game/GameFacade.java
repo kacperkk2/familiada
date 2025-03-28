@@ -6,6 +6,7 @@ import com.kk.familiada.game.dto.GameUpdateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,5 +30,9 @@ public class GameFacade {
 
     public void deleteGameByGameUuid(UUID gameUuid) {
         gamePersistService.deleteGameByGameUuid(gameUuid);
+    }
+
+    public List<GameDto> getAllGames() {
+        return gameService.getAllGames();
     }
 }
