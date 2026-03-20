@@ -8,6 +8,16 @@ export const routes: Routes = [
       import('./features/game-manager/game-manager/game-manager.component').then(m => m.GameManagerComponent),
   },
   {
+    path: 'games/new',
+    loadComponent: () =>
+      import('./features/game-manager/game-create/game-create.component').then(m => m.GameCreateComponent),
+  },
+  {
+    path: 'games/:id/edit',
+    loadComponent: () =>
+      import('./features/game-manager/game-create/game-create.component').then(m => m.GameCreateComponent),
+  },
+  {
     path: 'games/:id',
     loadComponent: () =>
       import('./features/game-manager/game-detail/game-detail.component').then(m => m.GameDetailComponent),
