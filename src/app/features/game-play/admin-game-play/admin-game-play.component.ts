@@ -1,14 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { startRound, revealQuestion, revealAnswer } from '../../../core/store/session/session.actions';
+import {
+  startRound, revealQuestion, revealAnswer,
+  setTeamName, addPenaltyPoint, removePenaltyPoint,
+  awardPoolToTeam, setTeamScore,
+} from '../../../core/store/session/session.actions';
 import {
   selectRevealedQuestion,
   selectRevealedAnswers,
   selectCurrentRoundIndex,
+  selectTeamNames,
+  selectPenaltyPoints,
+  selectTeamScores,
+  selectRoundPool,
 } from '../../../core/store/session/session.selectors';
 import { selectGameById } from '../../../core/store/games/games.selectors';
 import { Game, Round } from '../../../core/models/game.model';
@@ -16,7 +25,7 @@ import { Game, Round } from '../../../core/models/game.model';
 @Component({
   selector: 'app-admin-game-play',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-game-play.component.html',
   styleUrl: './admin-game-play.component.scss',
 })
@@ -28,6 +37,20 @@ export class AdminGamePlayComponent implements OnInit {
   revealedAnswers$!: Observable<string[]>;
   currentRoundIndex$!: Observable<number>;
   currentRound$!: Observable<Round | null>;
+  teamNames$!: Observable<[string, string]>;
+  penaltyPoints$!: Observable<[number, number]>;
+  teamScores$!: Observable<[number, number]>;
+  roundPool$!: Observable<number>;
+
+  swapped = false;
+
+  get displayedIndices(): [0 | 1, 0 | 1] {
+    return this.swapped ? [1, 0] : [0, 1];
+  }
+
+  swapTeams(): void {
+    this.swapped = !this.swapped;
+  }
 
   constructor(private route: ActivatedRoute, private store: Store) {}
 
@@ -40,6 +63,10 @@ export class AdminGamePlayComponent implements OnInit {
     this.currentRound$ = combineLatest([this.game$, this.currentRoundIndex$]).pipe(
       map(([game, index]) => game?.rounds[index] ?? null)
     );
+    this.teamNames$ = this.store.select(selectTeamNames);
+    this.penaltyPoints$ = this.store.select(selectPenaltyPoints);
+    this.teamScores$ = this.store.select(selectTeamScores);
+    this.roundPool$ = this.store.select(selectRoundPool);
   }
 
   onStartRound(index: number): void {
@@ -50,7 +77,30 @@ export class AdminGamePlayComponent implements OnInit {
     this.store.dispatch(revealQuestion());
   }
 
-  onRevealAnswer(answerId: string): void {
-    this.store.dispatch(revealAnswer({ answerId }));
+  onRevealAnswer(answerId: string, points: number): void {
+    this.store.dispatch(revealAnswer({ answerId, points }));
+  }
+
+  onSetTeamName(teamIndex: 0 | 1, name: string): void {
+    this.store.dispatch(setTeamName({ teamIndex, name }));
+  }
+
+  onAddPenalty(teamIndex: 0 | 1): void {
+    this.store.dispatch(addPenaltyPoint({ teamIndex }));
+  }
+
+  onRemovePenalty(teamIndex: 0 | 1): void {
+    this.store.dispatch(removePenaltyPoint({ teamIndex }));
+  }
+
+  onAwardPool(teamIndex: 0 | 1): void {
+    this.store.dispatch(awardPoolToTeam({ teamIndex }));
+  }
+
+  onSetTeamScore(teamIndex: 0 | 1, value: string): void {
+    const score = parseInt(value, 10);
+    if (!isNaN(score)) {
+      this.store.dispatch(setTeamScore({ teamIndex, score }));
+    }
   }
 }

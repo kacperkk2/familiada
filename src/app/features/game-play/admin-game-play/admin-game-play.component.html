@@ -43,7 +43,7 @@
           <span class="answer-text">{{ answer.text }}</span>
           <span class="answer-points">{{ answer.points }}</span>
           <button
-            (click)="onRevealAnswer(answer.id)"
+            (click)="onRevealAnswer(answer.id, answer.points)"
             [disabled]="(revealedAnswers$ | async)?.includes(answer.id)"
             class="btn-small"
           >
@@ -53,6 +53,83 @@
       </ul>
     </section>
   </ng-container>
+
+  <section class="section-card teams-section">
+    <h2>Drużyny</h2>
+    <div class="teams-layout"
+         *ngIf="{ n: (teamNames$ | async)!, p: (penaltyPoints$ | async)!, s: (teamScores$ | async)!, pool: (roundPool$ | async)! } as vm">
+
+      <!-- Lewa drużyna -->
+      <div class="team-control">
+        <label class="team-label">Drużyna {{ displayedIndices[0] + 1 }}</label>
+        <input class="team-name-input"
+               [value]="vm.n[displayedIndices[0]]"
+               #nameInputL
+               (blur)="onSetTeamName(displayedIndices[0], nameInputL.value)"
+               (keydown.enter)="onSetTeamName(displayedIndices[0], nameInputL.value); nameInputL.blur()"
+               placeholder="Nazwa drużyny" />
+        <div class="penalty-control">
+          <span class="penalty-label">Błędy: {{ vm.p[displayedIndices[0]] }}/3</span>
+          <button class="btn-small" (click)="onRemovePenalty(displayedIndices[0])"
+                  [disabled]="vm.p[displayedIndices[0]] === 0">−</button>
+          <button class="btn-small" (click)="onAddPenalty(displayedIndices[0])"
+                  [disabled]="vm.p[displayedIndices[0]] === 3">+</button>
+        </div>
+        <input class="team-score-input"
+               type="number"
+               [value]="vm.s[displayedIndices[0]]"
+               #scoreInputL
+               (blur)="onSetTeamScore(displayedIndices[0], scoreInputL.value)"
+               (keydown.enter)="onSetTeamScore(displayedIndices[0], scoreInputL.value); scoreInputL.blur()"
+               min="0" />
+      </div>
+
+      <!-- Środek: zamiana + pula -->
+      <div class="teams-middle">
+        <button class="btn-swap" (click)="swapTeams()" title="Zamień strony">⇄</button>
+        <div class="pool-box">
+          <span class="pool-label">Pula rundy</span>
+          <span class="pool-value">{{ vm.pool }} pkt</span>
+          <div class="pool-award-buttons">
+            <button class="btn-award btn-award--left"
+                    (click)="onAwardPool(displayedIndices[0])"
+                    [disabled]="!vm.pool"
+                    title="Przyznaj lewej drużynie">◄</button>
+            <button class="btn-award btn-award--right"
+                    (click)="onAwardPool(displayedIndices[1])"
+                    [disabled]="!vm.pool"
+                    title="Przyznaj prawej drużynie">►</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prawa drużyna -->
+      <div class="team-control">
+        <label class="team-label">Drużyna {{ displayedIndices[1] + 1 }}</label>
+        <input class="team-name-input"
+               [value]="vm.n[displayedIndices[1]]"
+               #nameInputR
+               (blur)="onSetTeamName(displayedIndices[1], nameInputR.value)"
+               (keydown.enter)="onSetTeamName(displayedIndices[1], nameInputR.value); nameInputR.blur()"
+               placeholder="Nazwa drużyny" />
+        <div class="penalty-control">
+          <span class="penalty-label">Błędy: {{ vm.p[displayedIndices[1]] }}/3</span>
+          <button class="btn-small" (click)="onRemovePenalty(displayedIndices[1])"
+                  [disabled]="vm.p[displayedIndices[1]] === 0">−</button>
+          <button class="btn-small" (click)="onAddPenalty(displayedIndices[1])"
+                  [disabled]="vm.p[displayedIndices[1]] === 3">+</button>
+        </div>
+        <input class="team-score-input"
+               type="number"
+               [value]="vm.s[displayedIndices[1]]"
+               #scoreInputR
+               (blur)="onSetTeamScore(displayedIndices[1], scoreInputR.value)"
+               (keydown.enter)="onSetTeamScore(displayedIndices[1], scoreInputR.value); scoreInputR.blur()"
+               min="0" />
+      </div>
+
+    </div>
+  </section>
 
   <section class="section-card audience-link">
     <h2>Link dla widzów</h2>

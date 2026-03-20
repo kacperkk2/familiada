@@ -10,6 +10,10 @@ import {
   selectRevealedAnswers,
   selectCurrentRoundIndex,
   selectGameId,
+  selectTeamNames,
+  selectPenaltyPoints,
+  selectTeamScores,
+  selectRoundPool,
 } from '../../../core/store/session/session.selectors';
 import { selectGameById } from '../../../core/store/games/games.selectors';
 import { CrossTabSyncService } from '../../../core/services/cross-tab-sync.service';
@@ -29,12 +33,20 @@ export class AudienceGamePlayComponent implements OnInit {
   currentRoundIndex$!: Observable<number>;
   gameId$!: Observable<string>;
   currentRound$!: Observable<Round | null>;
+  teamNames$!: Observable<[string, string]>;
+  penaltyPoints$!: Observable<[number, number]>;
+  teamScores$!: Observable<[number, number]>;
+  roundPool$!: Observable<number>;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store,
     private crossTabSync: CrossTabSyncService
   ) {}
+
+  getPenaltyArray(count: number): boolean[] {
+    return [0, 1, 2].map(i => i < count);
+  }
 
   ngOnInit(): void {
     const gameId = this.route.snapshot.paramMap.get('id') ?? '';
@@ -43,6 +55,10 @@ export class AudienceGamePlayComponent implements OnInit {
     this.revealedAnswers$ = this.store.select(selectRevealedAnswers);
     this.currentRoundIndex$ = this.store.select(selectCurrentRoundIndex);
     this.gameId$ = this.store.select(selectGameId);
+    this.teamNames$ = this.store.select(selectTeamNames);
+    this.penaltyPoints$ = this.store.select(selectPenaltyPoints);
+    this.teamScores$ = this.store.select(selectTeamScores);
+    this.roundPool$ = this.store.select(selectRoundPool);
     this.currentRound$ = combineLatest([this.game$, this.currentRoundIndex$]).pipe(
       map(([game, index]) => game?.rounds[index] ?? null)
     );
