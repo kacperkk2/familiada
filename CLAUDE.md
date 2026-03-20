@@ -1,120 +1,152 @@
 # Familiada — CLAUDE.md
 
-Projekt: polska gra telewizyjna "Familiada" jako aplikacja webowa z widokiem admina i widokiem dla widzów, synchronizowanymi w czasie rzeczywistym między oknami przeglądarki.
+Polska gra telewizyjna jako aplikacja webowa: panel admina + widok widza, synchronizowane w czasie rzeczywistym.
 
 ## Stack
 
-- **Angular 19** (standalone components, signals gotowe do użycia)
-- **NgRx** (Store, Effects, Entity, Devtools) — wersja 19
-- **Angular Material 19** — UI components
-- **RxJS 7.8**
-- **SCSS** z partialami w `src/styles/`
+- **Angular 19** (standalone components, lazy routes)
+- **NgRx 19** (Store, Effects, Entity, Devtools)
+- **Angular Material 19**
+- **RxJS 7.8** / **TypeScript 5.6**
 
 ## Uruchamianie
 
 ```bash
-npm start          # dev server na localhost:4200
-npm run build      # production build
-npx ng build --configuration=development  # dev build
+npm start    # dev server na localhost:4200
+npm run build
 ```
 
-## Architektura
-
-### Routing
+## Routing
 
 | Ścieżka | Komponent | Opis |
 |---|---|---|
 | `/games` | `GameManagerComponent` | lista gier |
-| `/games/:id` | `GameDetailComponent` | szczegóły / edycja gry |
+| `/games/new` | `GameCreateComponent` | tworzenie gry |
+| `/games/:id/edit` | `GameCreateComponent` | edycja gry (ten sam komponent) |
+| `/games/:id` | `GameDetailComponent` | szczegóły gry, linki do play |
 | `/admin/play/:id` | `AdminGamePlayComponent` | panel prowadzącego |
 | `/play/:id` | `AudienceGamePlayComponent` | widok dla widzów (TV) |
 
-### Struktura katalogów
+## Struktura katalogów
 
 ```
 src/
 ├── styles/
-│   ├── _variables.scss   # kolory, CSS custom properties (:root)
-│   └── _common.scss      # wspólne klasy: .page-panel, .section-card, .answer-row, .btn-*
-├── styles.scss           # Material theme + importy partiali
+│   ├── _variables.scss       # CSS custom properties (:root)
+│   └── _common.scss          # globalne klasy: .page-panel, .section-card, .answer-row, .btn-*
+├── styles.scss               # Material theme + importy partiali
 └── app/
+    ├── app.routes.ts
+    ├── app.config.ts         # provideStore, provideEffects, metaReducers
     ├── core/
-    │   ├── models/       # Game, Round, Answer
-    │   ├── services/     # CrossTabSyncService
+    │   ├── models/game.model.ts     # Game, Round, Answer
+    │   ├── services/cross-tab-sync.service.ts
     │   └── store/
     │       ├── app.state.ts / app.reducer.ts
     │       ├── local-storage.meta-reducer.ts
-    │       └── session/  # actions, reducer, selectors, effects
+    │       ├── session/      # actions, reducer, selectors, effects
+    │       └── games/        # NgRx Entity CRUD
     └── features/
         ├── game-manager/
         │   ├── game-manager/   # lista gier
-        │   └── game-detail/    # edycja gry
+        │   ├── game-detail/    # szczegóły gry
+        │   └── game-create/    # formularz tworzenia/edycji
         └── game-play/
-            ├── admin-game-play/    # panel admina
-            └── audience-game-play/ # widok widza
+            ├── admin-game-play/
+            └── audience-game-play/
 ```
-
-Każdy komponent ma własny podfolder z plikami `.ts`, `.html`, `.scss`.
-
-### Synchronizacja okien (cross-tab)
-
-`CrossTabSyncService` łączy dwa mechanizmy:
-- **BroadcastChannel** (`familiada_game`) — real-time do wszystkich okien tej samej domeny
-- **localStorage** (`familiada_session`) — persystencja stanu sesji
-
-`SessionEffects` obsługuje obie strony:
-- `syncToOtherWindows$` — po akcjach admina (revealAnswer, revealQuestion, startRound) publikuje stan
-- `syncFromOtherWindows$` — odbiera stan z innych okien i dispatchu `sessionStateReceived`
-
-Stały meta-reducer (`localStorageMetaReducer`) persystuje cały `AppState` pod kluczem `familiada_state`.
-
-### NgRx — stan sesji (`session`)
-
-```typescript
-interface GameSessionState {
-  gameId: string;
-  currentRoundIndex: number;
-  revealedQuestion: boolean;
-  revealedAnswers: string[];  // id ujawnionych odpowiedzi
-}
-```
-
-Akcje: `startRound`, `revealQuestion`, `revealAnswer`, `sessionStateReceived`
-
-## Style — konwencje
-
-- CSS custom properties z `_variables.scss` są dostępne globalnie — używać `var(--color-accent)` itd. **bez importu** w plikach komponentów
-- Wspólne klasy layoutu (`.page-panel`, `.section-card`, `.answer-row`) definiowane w `_common.scss`, dostępne globalnie
-- Lokalne style komponentu tylko w jego własnym `.scss`
-- Nigdy `inline styles` ani `styles: [...]` w dekoratorze — zawsze osobny plik `.scss`
-
-### Dostępne tokeny
-
-| Token | Wartość | Zastosowanie |
-|---|---|---|
-| `--color-bg` | `#0a0a3e` | tło strony (widok widza) |
-| `--color-surface` | `#1a237e` | karty, nagłówki |
-| `--color-surface-alt` | `#0d0d6e` | wiersze odpowiedzi |
-| `--color-accent` | `#ffd600` | żółty kolor przewodni |
-| `--color-success` | `#388e3c` | ujawnione odpowiedzi |
-| `--color-text-muted` | `#aaaaaa` | podpisy, opisy |
 
 ## Modele danych
 
 ```typescript
-// Definicja gry (stała, edytowana przez admina przed grą)
-interface Game { id, name, rounds: Round[] }
-interface Round { id, question, answers: Answer[] }
-interface Answer { id, text, points }
+interface Answer { id: string; text: string; points: number; }
+interface Round  { id: string; question: string; answers: Answer[]; }
+interface Game   { id: string; name: string; rounds: Round[]; }
 
-// Stan rozgrywki (dynamiczny, synchronizowany między oknami)
-interface GameSessionState { gameId, currentRoundIndex, revealedQuestion, revealedAnswers }
+interface GameSessionState {
+  gameId: string;
+  currentRoundIndex: number;
+  revealedQuestion: boolean;
+  revealedAnswers: string[];         // id ujawnionych odpowiedzi
+  teamNames: [string, string];
+  penaltyPoints: [number, number];   // 0–3 na drużynę
+  teamScores: [number, number];
+  roundPool: number;                 // suma punktów z tej rundy
+}
 ```
 
-## Co jest jeszcze do zrobienia
+## NgRx — akcje
 
-- Załadowanie danych gry ze store do komponentów (teraz są DEMO_ROUNDS hardcoded w admin i audience)
-- Feature store dla gier (`games/` w NgRx Entity) — CRUD gier
-- Widok `GameManagerComponent` i `GameDetailComponent` — lista i edycja gier
-- Punktacja, licznik błędów
-- Animacje ujawniania odpowiedzi
+### Session
+
+| Akcja | Props |
+|---|---|
+| `startRound` | `gameId, roundIndex` |
+| `revealQuestion` | — |
+| `revealAnswer` | `answerId, points` |
+| `awardPoolToTeam` | `teamIndex: 0 \| 1` |
+| `setTeamScore` | `teamIndex, score` |
+| `setTeamName` | `teamIndex, name` |
+| `addPenaltyPoint` | `teamIndex` |
+| `removePenaltyPoint` | `teamIndex` |
+| `sessionStateReceived` | `state: GameSessionState` |
+
+### Games (NgRx Entity)
+
+`addGame`, `updateGame`, `deleteGame`, `gameReceivedFromSync`, `gameDeletedFromSync`
+
+## Synchronizacja okien
+
+`CrossTabSyncService` używa dwóch kanałów:
+- **BroadcastChannel** `familiada_game` — real-time sesja gry
+- **BroadcastChannel** `familiada_games` — sync definicji gier
+- **localStorage** `familiada_session` — persystencja sesji
+
+`localStorageMetaReducer` persystuje cały `AppState` pod kluczem `familiada_state`.
+
+## Style — konwencje
+
+- CSS custom properties z `_variables.scss` dostępne **globalnie** (`var(--color-accent)` bez importu)
+- Wspólne klasy z `_common.scss` dostępne globalnie
+- Style lokalne tylko w `.scss` komponentu — **nigdy** `styles: [...]` w dekoratorze
+
+### Tokeny
+
+| Token | Wartość |
+|---|---|
+| `--color-bg` | `#0a0a3e` |
+| `--color-surface` | `#1a237e` |
+| `--color-surface-alt` | `#0d0d6e` |
+| `--color-accent` | `#ffd600` |
+| `--color-success` | `#388e3c` |
+| `--color-danger` | `#c62828` |
+| `--color-text` | `#ffffff` |
+| `--color-text-muted` | `#aaaaaa` |
+| `--border-radius` | `8px` |
+| `--spacing-sm/md/lg` | `8/16/24px` |
+
+### Klasy globalne
+
+| Klasa | Opis |
+|---|---|
+| `.page-panel` | kontener, max-width 760px, centered |
+| `.section-card` | karta z tłem i paddingiem |
+| `.answer-row` | wiersz odpowiedzi (flex) |
+| `.btn-primary` | żółte obramowanie, CTA |
+| `.btn-reveal` | zielony przycisk ujawnienia |
+| `.btn-danger` | czerwony przycisk usunięcia |
+| `.btn-small` | mały pomocniczy przycisk |
+
+## AdminGamePlayComponent — specyfika
+
+- `swapped: boolean` — wizualna zamiana drużyn (zmienia `displayedIndices`)
+- Dispatche: wszystkie akcje sesji
+- Selektory: `game$`, `currentRound$`, `revealedQuestion$`, `revealedAnswers$`, `teamNames$`, `penaltyPoints$`, `teamScores$`, `roundPool$`
+
+## AudienceGamePlayComponent — specyfika
+
+- Tylko odczyt (zero dispatchów)
+- Pytanie ukryte do `revealedQuestion === true`
+- Nieodsłonięte odpowiedzi wyświetlane jako `▬▬▬▬▬▬`
+- `getPenaltyArray(count)` — helper do renderowania znaków X
+- Fallback hydration z localStorage gdy store nie ma aktywnej sesji

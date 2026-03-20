@@ -1,5 +1,6 @@
 import { ActionReducer, MetaReducer } from '@ngrx/store';
 import { AppState } from './app.state';
+import { initialSessionState } from './session/session.state';
 
 const STATE_KEY = 'familiada_state';
 
@@ -18,7 +19,12 @@ export function localStorageMetaReducer(reducer: ActionReducer<AppState>): Actio
 export function hydrateStateFromLocalStorage(): Partial<AppState> {
   try {
     const stored = localStorage.getItem(STATE_KEY);
-    return stored ? JSON.parse(stored) : {};
+    if (!stored) return {};
+    const parsed = JSON.parse(stored) as Partial<AppState>;
+    if (parsed.session) {
+      parsed.session = { ...initialSessionState, ...parsed.session };
+    }
+    return parsed;
   } catch {
     return {};
   }

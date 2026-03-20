@@ -7,3 +7,7 @@ export const selectRevealedQuestion = createSelector(selectSessionState, s => s.
 export const selectRevealedAnswers = createSelector(selectSessionState, s => s.revealedAnswers);
 export const selectCurrentRoundIndex = createSelector(selectSessionState, s => s.currentRoundIndex);
 export const selectGameId = createSelector(selectSessionState, s => s.gameId);
+export const selectTeamNames = createSelector(selectSessionState, s => s.teamNames);
+export const selectPenaltyPoints = createSelector(selectSessionState, s => s.penaltyPoints);
+export const selectTeamScores = createSelector(selectSessionState, s => s.teamScores);
+export const selectRoundPool = createSelector(selectSessionState, s => s.roundPool);
