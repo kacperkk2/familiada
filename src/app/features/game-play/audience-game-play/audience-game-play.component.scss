@@ -1,0 +1,61 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg) 0 var(--spacing-md);
+
+  h1 {
+    margin: 0;
+    font-size: 3rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    font-weight: 900;
+  }
+
+  .game-id {
+    margin: 6px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+}
+
+.question-board {
+  text-align: center;
+  border: 2px solid var(--color-accent);
+  margin-bottom: var(--spacing-lg);
+
+  .question {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .placeholder {
+    font-size: 2rem;
+    letter-spacing: 10px;
+    color: var(--color-border);
+  }
+}
+
+.answers-board {
+  border: 1px solid var(--color-surface);
+}
+
+.hidden-slot {
+  color: var(--color-border);
+}
+
+.waiting {
+  text-align: center;
+  padding: 80px var(--spacing-lg);
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+}

@@ -1,0 +1,61 @@
+<div class="page-panel">
+  <header class="admin-header">
+    <h1>Panel admina — Gra: {{ gameId }}</h1>
+    <p class="subtitle">Tylko ty widzisz ten widok</p>
+  </header>
+
+  <section class="section-card">
+    <h2>Rundy</h2>
+    <div class="round-buttons">
+      <button
+        *ngFor="let round of rounds; let i = index"
+        (click)="onStartRound(i)"
+        [class.active]="(currentRoundIndex$ | async) === i"
+        class="btn-primary"
+      >
+        Runda {{ i + 1 }}
+      </button>
+    </div>
+  </section>
+
+  <ng-container *ngIf="currentRound$ | async as round">
+    <section class="section-card">
+      <h2>Pytanie</h2>
+      <p class="question-text">{{ round.question }}</p>
+      <button
+        (click)="onRevealQuestion()"
+        [disabled]="revealedQuestion$ | async"
+        class="btn-reveal"
+      >
+        {{ (revealedQuestion$ | async) ? '✓ Pytanie ujawnione' : 'Ujawnij pytanie' }}
+      </button>
+    </section>
+
+    <section class="section-card">
+      <h2>Odpowiedzi</h2>
+      <ul class="answer-list">
+        <li
+          *ngFor="let answer of round.answers; let i = index"
+          class="answer-row"
+          [class.revealed]="(revealedAnswers$ | async)?.includes(answer.id)"
+        >
+          <span class="answer-position">{{ i + 1 }}</span>
+          <span class="answer-text">{{ answer.text }}</span>
+          <span class="answer-points">{{ answer.points }}</span>
+          <button
+            (click)="onRevealAnswer(answer.id)"
+            [disabled]="(revealedAnswers$ | async)?.includes(answer.id)"
+            class="btn-small"
+          >
+            {{ (revealedAnswers$ | async)?.includes(answer.id) ? '✓' : 'Ujawnij' }}
+          </button>
+        </li>
+      </ul>
+    </section>
+  </ng-container>
+
+  <section class="section-card audience-link">
+    <h2>Link dla widzów</h2>
+    <code>/play/{{ gameId }}</code>
+  </section>
+</div>

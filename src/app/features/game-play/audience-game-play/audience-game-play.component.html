@@ -1,0 +1,43 @@
+<div class="audience-view page-panel">
+  <header class="game-header">
+    <h1>Familiada</h1>
+    <p class="game-id">Gra: {{ gameId$ | async }}</p>
+  </header>
+
+  <ng-container *ngIf="currentRound$ | async as round; else waiting">
+    <section class="section-card question-board">
+      <ng-container *ngIf="revealedQuestion$ | async; else questionHidden">
+        <p class="question">{{ round.question }}</p>
+      </ng-container>
+      <ng-template #questionHidden>
+        <p class="question placeholder">???</p>
+      </ng-template>
+    </section>
+
+    <section class="section-card answers-board">
+      <ul class="answer-list">
+        <li
+          *ngFor="let answer of round.answers; let i = index"
+          class="answer-row"
+          [class.revealed]="(revealedAnswers$ | async)?.includes(answer.id)"
+        >
+          <span class="answer-position">{{ i + 1 }}</span>
+          <ng-container *ngIf="(revealedAnswers$ | async)?.includes(answer.id); else hidden">
+            <span class="answer-text">{{ answer.text }}</span>
+            <span class="answer-points">{{ answer.points }}</span>
+          </ng-container>
+          <ng-template #hidden>
+            <span class="answer-text hidden-slot">▬▬▬▬▬▬</span>
+            <span class="answer-points hidden-slot">—</span>
+          </ng-template>
+        </li>
+      </ul>
+    </section>
+  </ng-container>
+
+  <ng-template #waiting>
+    <div class="waiting">
+      <p>Czekaj na start gry...</p>
+    </div>
+  </ng-template>
+</div>

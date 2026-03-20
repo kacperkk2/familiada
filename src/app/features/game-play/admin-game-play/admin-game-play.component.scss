@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #1e1e2e;
+}
+
+.admin-header {
+  background: var(--color-surface);
+  border-bottom: 3px solid var(--color-accent);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--color-text);
+  }
+
+  .subtitle {
+    margin: 4px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+}
+
+.round-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+
+  .btn-primary.active {
+    background: var(--color-accent);
+    color: #000;
+  }
+}
+
+.question-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-md);
+  color: var(--color-text);
+}
+
+.audience-link code {
+  display: inline-block;
+  background: var(--color-surface-alt);
+  padding: 6px var(--spacing-md);
+  border-radius: 4px;
+  font-size: 1rem;
+  color: var(--color-accent);
+  letter-spacing: 0.5px;
+}
