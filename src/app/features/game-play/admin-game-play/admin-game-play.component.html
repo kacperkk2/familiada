@@ -4,11 +4,11 @@
     <p class="subtitle">Tylko ty widzisz ten widok</p>
   </header>
 
-  <section class="section-card">
+  <section class="section-card" *ngIf="game$ | async as game">
     <h2>Rundy</h2>
     <div class="round-buttons">
       <button
-        *ngFor="let round of rounds; let i = index"
+        *ngFor="let round of game.rounds; let i = index"
         (click)="onStartRound(i)"
         [class.active]="(currentRoundIndex$ | async) === i"
         class="btn-primary"

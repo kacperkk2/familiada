@@ -1,2 +1,32 @@
-<h1>Game Detail</h1>
-<p>Szczegóły gry będą tutaj.</p>
+<div class="page-panel">
+  <ng-container *ngIf="game$ | async as game; else notFound">
+    <div class="section-card">
+      <div class="detail-header">
+        <h1>{{ game.name }}</h1>
+        <div class="actions">
+          <a [routerLink]="['/games']" class="btn-small">Powrót</a>
+          <a [routerLink]="['/games', game.id, 'edit']" class="btn-small">Edytuj</a>
+          <a [routerLink]="['/admin/play', game.id]" class="btn-primary">Graj</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let round of game.rounds; let i = index" class="section-card">
+      <h2>Runda {{ i + 1 }}</h2>
+      <p class="question-text">{{ round.question }}</p>
+      <ul class="answer-list">
+        <li *ngFor="let answer of round.answers" class="answer-row">
+          <span class="answer-text">{{ answer.text }}</span>
+          <span class="answer-points">{{ answer.points }} pkt</span>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+
+  <ng-template #notFound>
+    <div class="section-card">
+      <p>Gra nie znaleziona.</p>
+      <a [routerLink]="['/games']" class="btn-small">Powrót do listy</a>
+    </div>
+  </ng-template>
+</div>

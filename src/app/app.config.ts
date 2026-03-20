@@ -8,6 +8,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { appReducers, metaReducers, hydrateStateFromLocalStorage } from './core/store';
 import { SessionEffects } from './core/store/session/session.effects';
+import { GamesEffects } from './core/store/games/games.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
         strictActionImmutability: true,
       },
     }),
-    provideEffects(SessionEffects),
+    provideEffects(SessionEffects, GamesEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

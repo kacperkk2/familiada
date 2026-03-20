@@ -1,2 +1,20 @@
-<h1>Game Manager</h1>
-<p>Lista gier będzie tutaj.</p>
+<div class="page-panel">
+  <div class="section-card">
+    <div class="header-row">
+      <h1>Zarządzanie grami</h1>
+      <button class="btn-primary" (click)="navigateToNew()">Nowa gra</button>
+    </div>
+
+    <ng-container *ngIf="games$ | async as games">
+      <p *ngIf="games.length === 0" class="empty-message">Brak gier. Utwórz pierwszą grę.</p>
+
+      <ul *ngIf="games.length > 0" class="game-list">
+        <li *ngFor="let game of games" class="game-item">
+          <a [routerLink]="['/games', game.id]" class="game-name">{{ game.name }}</a>
+          <span class="game-meta">{{ game.rounds.length }} rund(y)</span>
+          <button class="btn-small btn-danger" (click)="deleteGame(game.id)">Usuń</button>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+</div>
