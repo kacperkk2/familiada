@@ -1,0 +1,11 @@
+<div class="answer-board" [class.revealed]="revealed">
+  <span class="answer-position">{{ position }}</span>
+  <ng-container *ngIf="revealed; else hidden">
+    <span class="answer-text">{{ answer.text }}</span>
+    <span class="answer-points">{{ answer.points }}</span>
+  </ng-container>
+  <ng-template #hidden>
+    <span class="answer-text placeholder">..................................</span>
+    <span class="answer-points placeholder">....</span>
+  </ng-template>
+</div>

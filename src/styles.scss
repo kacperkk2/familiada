@@ -2,6 +2,13 @@
 @use './styles/variables' as vars;
 @use './styles/common';
 
+@font-face {
+  font-family: 'Familiada';
+  src: url('/assets/fonts/familiada.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @include mat.core();
 
 $familiada-primary: mat.define-theme((

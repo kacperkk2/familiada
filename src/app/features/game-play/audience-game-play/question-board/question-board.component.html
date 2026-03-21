@@ -1,0 +1,6 @@
+<section class="question-board">
+  <p class="question" *ngIf="revealed; else questionHidden">{{ question }}</p>
+  <ng-template #questionHidden>
+    <p class="question placeholder">???</p>
+  </ng-template>
+</section>

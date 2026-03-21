@@ -1,0 +1,26 @@
+.team-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: var(--color-accent);
+
+  &--right {
+    align-items: flex-end;
+  }
+}
+
+.team-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-break: break-word;
+}
+
+.team-score {
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-align: center;
+}

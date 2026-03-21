@@ -1,0 +1,12 @@
+<section class="answers-board">
+  <ul class="answer-list">
+    <li *ngFor="let answer of answers; let i = index">
+      <app-answer-board
+        [answer]="answer"
+        [position]="i + 1"
+        [revealed]="revealedAnswers.includes(answer.id)"
+      />
+    </li>
+  </ul>
+  <app-points-pool [pool]="pool" />
+</section>
