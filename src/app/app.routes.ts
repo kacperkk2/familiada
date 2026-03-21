@@ -32,5 +32,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/game-play/audience-game-play/audience-game-play.component').then(m => m.AudienceGamePlayComponent),
   },
+  {
+    path: 'import',
+    loadComponent: () =>
+      import('./features/game-manager/import-game/import-game.component').then(m => m.ImportGameComponent),
+  },
   { path: '**', redirectTo: 'games' },
 ];

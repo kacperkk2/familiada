@@ -30,3 +30,10 @@
   min-width: 4rem;
   text-align: right;
 }
+
+.btn-export {
+  &.copied {
+    color: var(--color-success);
+    border-color: var(--color-success);
+  }
+}
