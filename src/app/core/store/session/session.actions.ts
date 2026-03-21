@@ -7,9 +7,14 @@ export const startRound = createAction(
 );
 
 export const revealQuestion = createAction('[Session] Reveal Question');
+export const hideQuestion = createAction('[Session] Hide Question');
 
 export const revealAnswer = createAction(
   '[Session] Reveal Answer',
+  props<{ answerId: string; points: number }>()
+);
+export const hideAnswer = createAction(
+  '[Session] Hide Answer',
   props<{ answerId: string; points: number }>()
 );
 

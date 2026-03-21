@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  startRound, revealQuestion, revealAnswer,
+  startRound, revealQuestion, hideQuestion, revealAnswer, hideAnswer,
   setTeamName, addPenaltyPoint, removePenaltyPoint,
   awardPoolToTeam, setTeamScore,
 } from '../../../core/store/session/session.actions';
@@ -25,7 +25,7 @@ import { Game, Round } from '../../../core/models/game.model';
 @Component({
   selector: 'app-admin-game-play',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-game-play.component.html',
   styleUrl: './admin-game-play.component.scss',
 })
@@ -73,12 +73,12 @@ export class AdminGamePlayComponent implements OnInit {
     this.store.dispatch(startRound({ gameId: this.gameId, roundIndex: index }));
   }
 
-  onRevealQuestion(): void {
-    this.store.dispatch(revealQuestion());
+  onToggleQuestion(isRevealed: boolean): void {
+    this.store.dispatch(isRevealed ? hideQuestion() : revealQuestion());
   }
 
-  onRevealAnswer(answerId: string, points: number): void {
-    this.store.dispatch(revealAnswer({ answerId, points }));
+  onToggleAnswer(answerId: string, points: number, isRevealed: boolean): void {
+    this.store.dispatch(isRevealed ? hideAnswer({ answerId, points }) : revealAnswer({ answerId, points }));
   }
 
   onSetTeamName(teamIndex: 0 | 1, name: string): void {

@@ -6,12 +6,14 @@
 .decoding-state,
 .error-state {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
+  color: var(--color-text-muted);
 }
 
 .error-message {
   color: var(--color-danger);
   margin-bottom: var(--spacing-md);
+  font-size: 0.9rem;
 }
 
 .import-header {
@@ -21,40 +23,48 @@
 
   h1 {
     margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
   }
 }
 
 .import-badge {
   background: var(--color-accent);
-  color: var(--color-bg);
-  font-size: 0.75rem;
+  color: #111;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 2px 8px;
-  border-radius: var(--border-radius);
+  padding: 3px 10px;
+  border-radius: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .import-hint {
   color: var(--color-text-muted);
   margin: var(--spacing-sm) 0 0;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .question-text {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-secondary);
 }
 
 .answer-points {
   color: var(--color-accent);
-  font-weight: bold;
-  min-width: 4rem;
+  font-weight: 600;
+  min-width: 4.5rem;
   text-align: right;
+  font-size: 0.9rem;
 }
 
 .import-actions {
   display: flex;
   gap: var(--spacing-md);
   align-items: center;
+  flex-wrap: wrap;
 }

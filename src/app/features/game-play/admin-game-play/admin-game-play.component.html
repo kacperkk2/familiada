@@ -1,65 +1,52 @@
 <div class="page-panel">
-  <header class="admin-header">
-    <h1>Panel admina — Gra: {{ gameId }}</h1>
-    <p class="subtitle">Tylko ty widzisz ten widok</p>
-  </header>
-
-  <section class="section-card" *ngIf="game$ | async as game">
-    <h2>Rundy</h2>
-    <div class="round-buttons">
-      <button
-        *ngFor="let round of game.rounds; let i = index"
-        (click)="onStartRound(i)"
-        [class.active]="(currentRoundIndex$ | async) === i"
-        class="btn-primary"
-      >
-        Runda {{ i + 1 }}
-      </button>
+  <div class="admin-header">
+    <h1 class="admin-title">{{ (game$ | async)?.name }}</h1>
+    <div class="header-actions">
+      <a [routerLink]="['/games', gameId]" class="btn-small">Powrót</a>
+      <a href="/play/{{ gameId }}" target="_blank" class="btn-small">Widok graczy</a>
     </div>
-  </section>
+  </div>
+
+  <div class="round-buttons" *ngIf="game$ | async as game">
+    <button
+      *ngFor="let round of game.rounds; let i = index"
+      (click)="onStartRound(i)"
+      [class.btn-round-active]="(currentRoundIndex$ | async) === i"
+      [class.btn-round-inactive]="(currentRoundIndex$ | async) !== i"
+      class="btn-round"
+    >
+      Runda {{ i + 1 }}
+    </button>
+  </div>
 
   <ng-container *ngIf="currentRound$ | async as round">
-    <section class="section-card">
-      <h2>Pytanie</h2>
-      <p class="question-text">{{ round.question }}</p>
-      <button
-        (click)="onRevealQuestion()"
-        [disabled]="revealedQuestion$ | async"
-        class="btn-reveal"
-      >
-        {{ (revealedQuestion$ | async) ? '✓ Pytanie ujawnione' : 'Ujawnij pytanie' }}
-      </button>
-    </section>
+    <ng-container *ngIf="{ revealed: (revealedQuestion$ | async)!, answers: (revealedAnswers$ | async)! } as vm">
 
-    <section class="section-card">
-      <h2>Odpowiedzi</h2>
-      <ul class="answer-list">
-        <li
+      <div class="round-section">
+        <div class="question-row" (click)="onToggleQuestion(vm.revealed)" [class.revealed]="vm.revealed">
+          <span class="question-text">{{ round.question }}</span>
+        </div>
+      </div>
+
+      <div class="round-section">
+        <div
           *ngFor="let answer of round.answers; let i = index"
           class="answer-row"
-          [class.revealed]="(revealedAnswers$ | async)?.includes(answer.id)"
+          [class.revealed]="vm.answers.includes(answer.id)"
+          (click)="onToggleAnswer(answer.id, answer.points, vm.answers.includes(answer.id))"
         >
-          <span class="answer-position">{{ i + 1 }}</span>
           <span class="answer-text">{{ answer.text }}</span>
           <span class="answer-points">{{ answer.points }}</span>
-          <button
-            (click)="onRevealAnswer(answer.id, answer.points)"
-            [disabled]="(revealedAnswers$ | async)?.includes(answer.id)"
-            class="btn-small"
-          >
-            {{ (revealedAnswers$ | async)?.includes(answer.id) ? '✓' : 'Ujawnij' }}
-          </button>
-        </li>
-      </ul>
-    </section>
+        </div>
+      </div>
+
+    </ng-container>
   </ng-container>
 
-  <section class="section-card teams-section">
-    <h2>Drużyny</h2>
+  <div class="round-section">
     <div class="teams-layout"
          *ngIf="{ n: (teamNames$ | async)!, p: (penaltyPoints$ | async)!, s: (teamScores$ | async)!, pool: (roundPool$ | async)! } as vm">
 
-      <!-- Lewa drużyna -->
       <div class="team-control">
         <label class="team-label">Drużyna {{ displayedIndices[0] + 1 }}</label>
         <input class="team-name-input"
@@ -84,18 +71,17 @@
                min="0" />
       </div>
 
-      <!-- Środek: zamiana + pula -->
       <div class="teams-middle">
         <button class="btn-swap" (click)="swapTeams()" title="Zamień strony">⇄</button>
         <div class="pool-box">
           <span class="pool-label">Pula rundy</span>
           <span class="pool-value">{{ vm.pool }} pkt</span>
           <div class="pool-award-buttons">
-            <button class="btn-award btn-award--left"
+            <button class="btn-award"
                     (click)="onAwardPool(displayedIndices[0])"
                     [disabled]="!vm.pool"
                     title="Przyznaj lewej drużynie">◄</button>
-            <button class="btn-award btn-award--right"
+            <button class="btn-award"
                     (click)="onAwardPool(displayedIndices[1])"
                     [disabled]="!vm.pool"
                     title="Przyznaj prawej drużynie">►</button>
@@ -103,7 +89,6 @@
         </div>
       </div>
 
-      <!-- Prawa drużyna -->
       <div class="team-control">
         <label class="team-label">Drużyna {{ displayedIndices[1] + 1 }}</label>
         <input class="team-name-input"
@@ -129,10 +114,7 @@
       </div>
 
     </div>
-  </section>
+  </div>
 
-  <section class="section-card audience-link">
-    <h2>Link dla widzów</h2>
-    <code>/play/{{ gameId }}</code>
-  </section>
+
 </div>

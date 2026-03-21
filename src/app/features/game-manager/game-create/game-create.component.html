@@ -1,48 +1,41 @@
 <div class="page-panel">
-  <div class="section-card">
+  <form [formGroup]="form" (ngSubmit)="onSave()">
+
     <div class="form-header">
-      <h1>{{ editId ? 'Edytuj grę' : 'Nowa gra' }}</h1>
-      <a [routerLink]="editId ? ['/games', editId] : ['/games']" class="btn-small">Anuluj</a>
+      <input class="title-input" formControlName="name" placeholder="Nazwa gry…" />
+      <div class="header-actions">
+        <a [routerLink]="editId ? ['/games', editId] : ['/games']" class="btn-small">Anuluj</a>
+        <button type="submit" class="btn-save" [disabled]="form.invalid">
+          {{ editId ? 'Zapisz zmiany' : 'Zapisz grę' }}
+        </button>
+      </div>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSave()">
-      <div class="field">
-        <label for="gameName">Nazwa gry</label>
-        <input id="gameName" type="text" formControlName="name" placeholder="Np. Familiada — Odcinek 1" />
-      </div>
+    <div formArrayName="rounds">
+      <div *ngFor="let round of rounds.controls; let ri = index" [formGroupName]="ri" class="round-section">
 
-      <div formArrayName="rounds">
-        <div *ngFor="let round of rounds.controls; let ri = index" [formGroupName]="ri" class="round-card">
-          <div class="round-header">
-            <h2>Runda {{ ri + 1 }}</h2>
-            <button type="button" class="btn-small btn-danger" (click)="removeRound(ri)" [disabled]="rounds.length === 1">
-              Usuń rundę
-            </button>
-          </div>
-
-          <div class="field">
-            <label>Pytanie</label>
-            <input type="text" formControlName="question" placeholder="Treść pytania" />
-          </div>
-
-          <div formArrayName="answers">
-            <div *ngFor="let answer of getAnswers(ri).controls; let ai = index" [formGroupName]="ai" class="answer-row">
-              <input type="text" formControlName="text" placeholder="Odpowiedź" class="answer-input" />
-              <input type="number" formControlName="points" placeholder="Punkty" class="points-input" min="0" />
-              <button type="button" class="btn-small btn-danger" (click)="removeAnswer(ri, ai)" [disabled]="getAnswers(ri).length === 1">
-                ✕
-              </button>
-            </div>
-          </div>
-
-          <button type="button" class="btn-small" (click)="addAnswer(ri)">+ Dodaj odpowiedź</button>
+        <div class="round-header">
+          <p class="round-label">Runda {{ ri + 1 }}</p>
+          <button type="button" class="btn-remove-round" (click)="removeRound(ri)" [disabled]="rounds.length === 1">
+            Usuń rundę
+          </button>
         </div>
-      </div>
 
-      <div class="form-actions">
-        <button type="button" class="btn-small" (click)="addRound()">+ Dodaj rundę</button>
-        <button type="submit" class="btn-primary" [disabled]="form.invalid">{{ editId ? 'Zapisz zmiany' : 'Zapisz grę' }}</button>
+        <input type="text" formControlName="question" placeholder="Treść pytania…" class="question-input" />
+
+        <div formArrayName="answers">
+          <div *ngFor="let answer of getAnswers(ri).controls; let ai = index" [formGroupName]="ai" class="answer-item">
+            <input type="text" formControlName="text" placeholder="Odpowiedź" class="answer-input" />
+            <input type="number" formControlName="points" placeholder="0" class="points-input" min="0" />
+            <button type="button" class="btn-remove-answer" (click)="removeAnswer(ri, ai)" [disabled]="getAnswers(ri).length === 1">✕</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn-add-answer" (click)="addAnswer(ri)">Dodaj odpowiedź</button>
       </div>
-    </form>
-  </div>
+    </div>
+
+    <button type="button" class="btn-add-round" (click)="addRound()">Dodaj rundę</button>
+
+  </form>
 </div>
