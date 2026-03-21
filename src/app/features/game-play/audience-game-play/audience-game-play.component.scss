@@ -1,7 +1,12 @@
 :host {
-  display: block;
+  display: flex;
+  align-items: center;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: #000;
+
+  > * {
+    width: 100%;
+  }
 }
 
 .game-header {
@@ -26,89 +31,16 @@
   }
 }
 
-.question-board {
-  text-align: center;
-  border: 2px solid var(--color-accent);
-  margin-bottom: var(--spacing-lg);
-
-  .question {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  .placeholder {
-    font-size: 2rem;
-    letter-spacing: 10px;
-    color: var(--color-border);
-  }
-}
-
-.answers-board {
-  border: 1px solid var(--color-surface);
-}
-
-.pool-display {
-  text-align: center;
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--color-accent);
-  padding: var(--spacing-sm) 0 2px;
-  letter-spacing: 1px;
-}
-
-.hidden-slot {
-  color: var(--color-border);
-}
 
 .game-arena {
   display: grid;
   grid-template-columns: 80px 1fr 80px;
   gap: 8px;
-  align-items: end;
+  align-items: start;
 }
 
-.penalty-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.x-marks {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 8px;
-}
-
-.x-mark {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #555;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-
-  &--active {
-    color: var(--color-accent);
-    text-shadow: 0 0 12px var(--color-accent);
-  }
-}
-
-.team-name {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-text);
-  word-break: break-word;
-}
-
-.team-score {
-  font-size: 1.4rem;
-  font-weight: 900;
-  text-align: center;
-  color: var(--color-accent);
+.teams-summary-row {
+  grid-column: 1 / -1;
 }
 
 .waiting {

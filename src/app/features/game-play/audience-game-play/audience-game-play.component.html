@@ -1,60 +1,24 @@
 <div class="audience-view page-panel">
-  <header class="game-header">
-    <h1>Familiada</h1>
-    <p class="game-id">Gra: {{ gameId$ | async }}</p>
-  </header>
-
-  <ng-container *ngIf="currentRound$ | async as round; else waiting">
-    <section class="section-card question-board">
-      <ng-container *ngIf="revealedQuestion$ | async; else questionHidden">
-        <p class="question">{{ round.question }}</p>
-      </ng-container>
-      <ng-template #questionHidden>
-        <p class="question placeholder">???</p>
-      </ng-template>
-    </section>
+<ng-container *ngIf="currentRound$ | async as round; else waiting">
+    <app-question-board
+      [question]="round.question"
+      [revealed]="(revealedQuestion$ | async) ?? false"
+    />
 
     <div class="game-arena"
          *ngIf="{ n: (teamNames$ | async)!, p: (penaltyPoints$ | async)!, s: (teamScores$ | async)!, pool: (roundPool$ | async)! } as vm">
 
-      <div class="penalty-column">
-        <div class="x-marks">
-          <span *ngFor="let lit of getPenaltyArray(vm.p[0])"
-                class="x-mark" [class.x-mark--active]="lit">✕</span>
-        </div>
-        <div class="team-name">{{ vm.n[0] }}</div>
-        <div class="team-score">{{ vm.s[0] }}</div>
-      </div>
+      <app-penalty-column [count]="vm.p[0]" />
 
-      <section class="section-card answers-board">
-        <ul class="answer-list">
-          <li
-            *ngFor="let answer of round.answers; let i = index"
-            class="answer-row"
-            [class.revealed]="(revealedAnswers$ | async)?.includes(answer.id)"
-          >
-            <span class="answer-position">{{ i + 1 }}</span>
-            <ng-container *ngIf="(revealedAnswers$ | async)?.includes(answer.id); else hidden">
-              <span class="answer-text">{{ answer.text }}</span>
-              <span class="answer-points">{{ answer.points }}</span>
-            </ng-container>
-            <ng-template #hidden>
-              <span class="answer-text hidden-slot">▬▬▬▬▬▬</span>
-              <span class="answer-points hidden-slot">—</span>
-            </ng-template>
-          </li>
-        </ul>
-        <div class="pool-display" *ngIf="vm.pool">{{ vm.pool }} pkt</div>
-      </section>
+      <app-answers-board
+        [answers]="round.answers"
+        [revealedAnswers]="(revealedAnswers$ | async) ?? []"
+        [pool]="vm.pool"
+      />
 
-      <div class="penalty-column">
-        <div class="x-marks">
-          <span *ngFor="let lit of getPenaltyArray(vm.p[1])"
-                class="x-mark" [class.x-mark--active]="lit">✕</span>
-        </div>
-        <div class="team-name">{{ vm.n[1] }}</div>
-        <div class="team-score">{{ vm.s[1] }}</div>
-      </div>
+      <app-penalty-column [count]="vm.p[1]" />
+
+      <app-teams-summary class="teams-summary-row" [names]="vm.n" [scores]="vm.s" />
 
     </div>
   </ng-container>

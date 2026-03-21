@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { QuestionBoardComponent } from './question-board/question-board.component';
+import { AnswersBoardComponent } from './answers-board/answers-board.component';
+import { TeamsSummaryComponent } from './teams-summary/teams-summary.component';
+import { PenaltyColumnComponent } from './penalty-column/penalty-column.component';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { sessionStateReceived } from '../../../core/store/session/session.actions';
 import {
   selectRevealedQuestion,
@@ -22,7 +26,7 @@ import { Game, Round } from '../../../core/models/game.model';
 @Component({
   selector: 'app-audience-game-play',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, QuestionBoardComponent, AnswersBoardComponent, TeamsSummaryComponent, PenaltyColumnComponent],
   templateUrl: './audience-game-play.component.html',
   styleUrl: './audience-game-play.component.scss',
 })
@@ -44,10 +48,6 @@ export class AudienceGamePlayComponent implements OnInit {
     private crossTabSync: CrossTabSyncService
   ) {}
 
-  getPenaltyArray(count: number): boolean[] {
-    return [0, 1, 2].map(i => i < count);
-  }
-
   ngOnInit(): void {
     const gameId = this.route.snapshot.paramMap.get('id') ?? '';
     this.game$ = this.store.select(selectGameById(gameId));
@@ -58,7 +58,7 @@ export class AudienceGamePlayComponent implements OnInit {
     this.teamNames$ = this.store.select(selectTeamNames);
     this.penaltyPoints$ = this.store.select(selectPenaltyPoints);
     this.teamScores$ = this.store.select(selectTeamScores);
-    this.roundPool$ = this.store.select(selectRoundPool);
+    this.roundPool$ = this.store.select(selectRoundPool).pipe(startWith(0));
     this.currentRound$ = combineLatest([this.game$, this.currentRoundIndex$]).pipe(
       map(([game, index]) => game?.rounds[index] ?? null)
     );
