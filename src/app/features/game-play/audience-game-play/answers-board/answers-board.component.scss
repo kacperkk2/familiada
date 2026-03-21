@@ -4,6 +4,7 @@
 
 .answer-list {
   list-style: none;
-  margin: 0;
+  margin: var(--spacing-md) 0 0;
   padding: 0;
+  min-height: calc(6 * (1rem + 2 * var(--spacing-sm)));
 }

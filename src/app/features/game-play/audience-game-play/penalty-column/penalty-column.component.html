@@ -1,4 +1,4 @@
-<div class="penalty-column">
+<div class="penalty-column" [class.penalty-column--right]="side === 'right'">
   <div class="x-marks">
     <span *ngFor="let lit of getPenaltyArray()"
           class="x-mark" [class.x-mark--active]="lit">✕</span>
