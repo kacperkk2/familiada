@@ -1,43 +1,41 @@
 <div class="page-panel">
   <ng-container *ngIf="game$ | async as game; else notFound">
-    <div class="section-card">
-      <div class="detail-header">
-        <h1>{{ game.name }}</h1>
-        <div class="actions">
-          <a [routerLink]="['/games']" class="btn-small">Powrót</a>
-          <a [routerLink]="['/games', game.id, 'edit']" class="btn-small">Edytuj</a>
-          <button
-            class="btn-small btn-export"
-            (click)="exportGame(game)"
-            [disabled]="copiedState === 'copying'"
-            [class.copied]="copiedState === 'copied'"
-          >
-            {{ copiedState === 'copying' ? 'Skracam…'
-             : copiedState === 'copied'  ? 'Skopiowano!'
-             : copiedState === 'error'   ? 'Błąd kopiowania'
-             : 'Eksportuj' }}
-          </button>
-          <a [routerLink]="['/admin/play', game.id]" class="btn-primary">Graj</a>
-        </div>
+
+    <div class="detail-header">
+      <h1 class="detail-title">{{ game.name }}</h1>
+      <div class="actions">
+        <a [routerLink]="['/games']" class="btn-small">Powrót</a>
+        <a [routerLink]="['/games', game.id, 'edit']" class="btn-small">Edytuj</a>
+        <button
+          class="btn-small btn-export"
+          (click)="exportGame(game)"
+          [disabled]="copiedState === 'copying'"
+          [class.copied]="copiedState === 'copied'"
+        >
+          {{ copiedState === 'copying' ? 'Skracam…'
+           : copiedState === 'copied'  ? 'Skopiowano!'
+           : copiedState === 'error'   ? 'Błąd kopiowania'
+           : 'Eksportuj' }}
+        </button>
+        <a [routerLink]="['/admin/play', game.id]" class="btn-play">Graj</a>
       </div>
     </div>
 
-    <div *ngFor="let round of game.rounds; let i = index" class="section-card">
-      <h2>Runda {{ i + 1 }}</h2>
+    <div *ngFor="let round of game.rounds; let i = index" class="round-section">
+      <p class="round-label">Runda {{ i + 1 }}</p>
       <p class="question-text">{{ round.question }}</p>
       <ul class="answer-list">
-        <li *ngFor="let answer of round.answers" class="answer-row">
+        <li *ngFor="let answer of round.answers" class="answer-item">
           <span class="answer-text">{{ answer.text }}</span>
           <span class="answer-points">{{ answer.points }} pkt</span>
         </li>
       </ul>
     </div>
+
   </ng-container>
 
   <ng-template #notFound>
-    <div class="section-card">
-      <p>Gra nie znaleziona.</p>
-      <a [routerLink]="['/games']" class="btn-small">Powrót do listy</a>
-    </div>
+    <p class="not-found">Gra nie znaleziona.</p>
+    <a [routerLink]="['/games']" class="btn-small">Powrót do listy</a>
   </ng-template>
 </div>

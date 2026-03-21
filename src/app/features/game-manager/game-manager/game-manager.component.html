@@ -1,20 +1,23 @@
 <div class="page-panel">
-  <div class="section-card">
-    <div class="header-row">
-      <h1>Zarządzanie grami</h1>
-      <button class="btn-primary" (click)="navigateToNew()">Nowa gra</button>
-    </div>
+  <div class="manager-header">
+    <h1 class="manager-title">Familiada</h1>
+    <button class="btn-new" (click)="navigateToNew()">Nowa gra</button>
+  </div>
 
-    <ng-container *ngIf="games$ | async as games">
-      <p *ngIf="games.length === 0" class="empty-message">Brak gier. Utwórz pierwszą grę.</p>
+  <ng-container *ngIf="games$ | async as games">
+    <p *ngIf="games.length === 0" class="empty-message">Brak gier. Utwórz pierwszą grę.</p>
 
-      <ul *ngIf="games.length > 0" class="game-list">
+    <div *ngIf="games.length > 0">
+      <p class="section-label">Wszystkie gry</p>
+      <ul class="game-list">
         <li *ngFor="let game of games" class="game-item">
-          <a [routerLink]="['/games', game.id]" class="game-name">{{ game.name }}</a>
-          <span class="game-meta">{{ game.rounds.length }} rund(y)</span>
-          <button class="btn-small btn-danger" (click)="deleteGame(game.id)">Usuń</button>
+          <a [routerLink]="['/games', game.id]" class="game-item-link">
+            <span class="game-title">{{ game.name }}</span>
+            <span class="game-subtitle">{{ game.rounds.length }} rund(y)</span>
+          </a>
+          <button class="btn-item-delete" (click)="deleteGame(game.id)">Usuń</button>
         </li>
       </ul>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
 </div>

@@ -1,29 +1,31 @@
 // ============================================================
-// Familiada — design tokens
+// Familiada — design tokens (Claude dark theme)
 // ============================================================
 
-// SCSS variables (for use within styles.scss / Material config)
-$color-bg:          #0a0a3e;
-$color-surface:     #1a237e;
-$color-surface-alt: #0d0d6e;
+// SCSS variables
+$color-bg:          #1c1c1c;
+$color-surface:     #242424;
+$color-surface-alt: #2c2c2c;
 $color-accent:      #ffd600;
-$color-success:     #388e3c;
-$color-danger:      #c62828;
-$color-text:        #ffffff;
-$color-text-muted:  #aaaaaa;
+$color-success:     #22c55e;
+$color-danger:      #f87171;
+$color-text:        #ececec;
+$color-text-muted:  #888888;
 $color-border:      #333333;
 
 // CSS custom properties — available in ALL component stylesheets without import
 :root {
-  --color-bg:          #{$color-bg};
-  --color-surface:     #{$color-surface};
-  --color-surface-alt: #{$color-surface-alt};
-  --color-accent:      #{$color-accent};
-  --color-success:     #{$color-success};
-  --color-danger:      #{$color-danger};
-  --color-text:        #{$color-text};
-  --color-text-muted:  #{$color-text-muted};
-  --color-border:      #{$color-border};
+  --color-bg:           #{$color-bg};
+  --color-surface:      #{$color-surface};
+  --color-surface-alt:  #{$color-surface-alt};
+  --color-surface-hover: #303030;
+  --color-accent:       #{$color-accent};
+  --color-success:      #{$color-success};
+  --color-danger:       #{$color-danger};
+  --color-text:         #{$color-text};
+  --color-text-muted:   #{$color-text-muted};
+  --color-text-secondary: #b4b4b4;
+  --color-border:       #{$color-border};
 
   --font-family: Roboto, 'Helvetica Neue', sans-serif;
   --border-radius: 8px;

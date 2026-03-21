@@ -1,6 +1,5 @@
 // ============================================================
 // Familiada — shared layout & component styles
-// Used as global utility classes in both admin and audience views
 // ============================================================
 
 .page-panel {
@@ -13,29 +12,30 @@
 
 .section-card {
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-md) var(--spacing-lg);
   margin-bottom: var(--spacing-md);
 
   h2 {
     margin: 0 0 12px;
-    font-size: 1.1rem;
-    color: var(--color-text);
-    opacity: 0.85;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
   }
 }
 
-// Answer rows shared between admin and audience
+// Answer rows
 .answer-row {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
   background: var(--color-surface-alt);
   padding: 10px var(--spacing-md);
-  border-radius: 4px;
-  border-left: 4px solid var(--color-border);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-border);
   transition: border-left-color 0.2s ease;
 
   &.revealed {
@@ -43,22 +43,23 @@
   }
 
   .answer-position {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--color-accent);
-    font-weight: bold;
+    font-weight: 600;
     min-width: 24px;
     text-align: center;
   }
 
   .answer-text {
     flex: 1;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 500;
+    color: var(--color-text);
   }
 
   .answer-points {
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: var(--color-accent);
     min-width: 48px;
     text-align: right;
@@ -71,41 +72,56 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 6px;
+}
+
+// Remove number input spinners globally
+input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 // Base button
 %btn-base {
-  padding: 8px 18px;
+  padding: 9px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-family: var(--font-family);
-  transition: opacity 0.15s ease;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.15s ease;
 
   &:disabled {
-    opacity: 0.45;
+    opacity: 0.4;
     cursor: default;
   }
 }
 
 .btn-primary {
   @extend %btn-base;
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 2px solid var(--color-accent);
+  background: var(--color-accent);
+  color: #111;
+  border: none;
+  font-weight: 600;
 
   &:not(:disabled):hover {
-    background: var(--color-accent);
-    color: #000;
+    opacity: 0.88;
   }
 }
 
 .btn-reveal {
   @extend %btn-base;
   background: var(--color-success);
-  color: var(--color-text);
+  color: #000;
+  font-weight: 600;
 
   &:not(:disabled):hover {
     opacity: 0.85;
@@ -114,21 +130,24 @@
 
 .btn-small {
   @extend %btn-base;
-  padding: 5px 12px;
-  font-size: 0.85rem;
-  background: var(--color-surface);
+  background: var(--color-surface-alt);
   color: var(--color-text);
   border: 1px solid var(--color-border);
+
+  &:not(:disabled):hover {
+    background: var(--color-surface-hover);
+    border-color: #555;
+  }
 }
 
 .btn-danger {
   @extend %btn-base;
   background: transparent;
-  color: #e53935;
-  border: 1px solid #e53935;
+  color: var(--color-danger);
+  border: 1px solid transparent;
 
   &:not(:disabled):hover {
-    background: #e53935;
-    color: #fff;
+    background: rgba(248, 113, 113, 0.1);
+    border-color: var(--color-danger);
   }
 }

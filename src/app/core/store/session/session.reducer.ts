@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { GameSessionState, initialSessionState } from './session.state';
 import {
-  startRound, revealQuestion, revealAnswer, sessionStateReceived,
-  setTeamName, addPenaltyPoint, removePenaltyPoint,
+  startRound, revealQuestion, hideQuestion, revealAnswer, hideAnswer,
+  sessionStateReceived, setTeamName, addPenaltyPoint, removePenaltyPoint,
   awardPoolToTeam, setTeamScore,
 } from './session.actions';
 
@@ -16,12 +16,21 @@ export const sessionReducer = createReducer(
     teamScores: state.teamScores,
   })),
   on(revealQuestion, state => ({ ...state, revealedQuestion: true })),
+  on(hideQuestion, state => ({ ...state, revealedQuestion: false })),
   on(revealAnswer, (state, { answerId, points }) => {
     if (state.revealedAnswers.includes(answerId)) return state;
     return {
       ...state,
       revealedAnswers: [...state.revealedAnswers, answerId],
       roundPool: state.roundPool + points,
+    };
+  }),
+  on(hideAnswer, (state, { answerId, points }) => {
+    if (!state.revealedAnswers.includes(answerId)) return state;
+    return {
+      ...state,
+      revealedAnswers: state.revealedAnswers.filter(id => id !== answerId),
+      roundPool: Math.max(0, state.roundPool - points),
     };
   }),
   on(sessionStateReceived, (_, { state }) => state),
