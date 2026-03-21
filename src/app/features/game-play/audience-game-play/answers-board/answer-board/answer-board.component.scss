@@ -5,25 +5,24 @@
   color: var(--color-accent);
   font-weight: normal;
   padding: var(--spacing-sm) var(--spacing-md);
+  line-height: 1;
 
   .answer-position {
-    font-size: 1.2rem;
     min-width: 1.5rem;
     text-align: center;
   }
 
   .answer-text {
     flex: 1;
-    font-size: 1.3rem;
   }
 
   .answer-points {
-    font-size: 1.3rem;
     min-width: 2rem;
     text-align: right;
   }
 
   .placeholder {
-    opacity: 0.4;
+    opacity: 0.5;
+    letter-spacing: 4px;
   }
 }

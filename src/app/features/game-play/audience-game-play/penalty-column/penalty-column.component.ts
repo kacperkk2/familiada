@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PenaltyColumnComponent {
   @Input() count = 0;
+  @Input() side: 'left' | 'right' = 'left';
 
   getPenaltyArray(): boolean[] {
     return [0, 1, 2].map(i => i < this.count);

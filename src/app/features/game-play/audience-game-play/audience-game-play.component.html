@@ -8,7 +8,7 @@
     <div class="game-arena"
          *ngIf="{ n: (teamNames$ | async)!, p: (penaltyPoints$ | async)!, s: (teamScores$ | async)!, pool: (roundPool$ | async)! } as vm">
 
-      <app-penalty-column [count]="vm.p[0]" />
+      <app-penalty-column [count]="vm.p[0]" side="left" />
 
       <app-answers-board
         [answers]="round.answers"
@@ -16,7 +16,7 @@
         [pool]="vm.pool"
       />
 
-      <app-penalty-column [count]="vm.p[1]" />
+      <app-penalty-column [count]="vm.p[1]" side="right" />
 
       <app-teams-summary class="teams-summary-row" [names]="vm.n" [scores]="vm.s" />
 

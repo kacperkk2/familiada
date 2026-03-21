@@ -1,18 +1,23 @@
 .question-board {
   color: var(--color-accent);
   text-align: center;
+  font-size: 1.3rem;
   margin-bottom: var(--spacing-lg);
+  height: calc(1.3rem * 1.4 * 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 
   .question {
     font-family: 'Familiada', sans-serif;
-    font-size: 1.5rem;
     font-weight: normal;
     margin: 0;
     line-height: 1.4;
   }
 
   .placeholder {
-    font-size: 2rem;
-    letter-spacing: 10px;
+    letter-spacing: 4px;
+    opacity: 0.5;
   }
 }
