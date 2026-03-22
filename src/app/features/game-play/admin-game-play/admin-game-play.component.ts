@@ -44,9 +44,11 @@ export class AdminGamePlayComponent implements OnInit {
   roundPool$!: Observable<number>;
 
   swapped = false;
-  fontSize = 1;
-  layoutScale = 0.8;
+  zoom = 1;
   soundEnabled = true;
+
+  increaseZoom(): void { this.zoom = Math.min(+(this.zoom + 0.1).toFixed(1), 3); }
+  decreaseZoom(): void { this.zoom = Math.max(+(this.zoom - 0.1).toFixed(1), 0.1); }
 
   toggleSound(): void {
     this.soundEnabled = !this.soundEnabled;
@@ -63,24 +65,6 @@ export class AdminGamePlayComponent implements OnInit {
       gainNode.connect(ctx.destination);
       audio.play();
     }
-  }
-
-  increaseFontSize(): void { this.fontSize = Math.min(+(this.fontSize + 0.1).toFixed(1), 2); }
-  decreaseFontSize(): void { this.fontSize = Math.max(+(this.fontSize - 0.1).toFixed(1), 0.5); }
-
-  increaseLayout(): void { this.layoutScale = Math.min(+(this.layoutScale + 0.1).toFixed(1), 1.5); }
-  decreaseLayout(): void { this.layoutScale = Math.max(+(this.layoutScale - 0.1).toFixed(1), 0.1); }
-
-  get layoutStyles(): Record<string, string> {
-    const s = this.layoutScale;
-    return {
-      '--section-gap': `${1.2 * s}rem`,
-      '--teams-gap': `${1.2 * s}rem`,
-      '--layout-row-h': `${29 * s}px`,
-      '--spacing-sm': `${6 * s}px`,
-      '--spacing-md': `${13 * s}px`,
-      '--spacing-lg': `${19 * s}px`,
-    };
   }
 
   get displayedIndices(): [0 | 1, 0 | 1] {

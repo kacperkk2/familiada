@@ -1,4 +1,10 @@
-<div class="audience-view page-panel">
+<div class="zoom-controls">
+  <button class="btn-small" (click)="decreaseZoom()"><span class="material-icons">zoom_out</span></button>
+  <span class="zoom-label">{{ (zoom * 100).toFixed(0) }}%</span>
+  <button class="btn-small" (click)="increaseZoom()"><span class="material-icons">zoom_in</span></button>
+</div>
+
+<div class="audience-view page-panel" [style.zoom]="zoom">
 <ng-container *ngIf="currentRound$ | async as round; else waiting">
     <app-question-board
       [question]="round.question"
