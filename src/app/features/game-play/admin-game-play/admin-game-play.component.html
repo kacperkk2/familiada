@@ -9,13 +9,25 @@
       <h1 class="admin-title">{{ (game$ | async)?.name }}</h1>
     </div>
     <div class="header-actions">
+      <a href="/familiada/play/{{ gameId }}" target="_blank" class="btn-small">Widok graczy</a>
+    </div>
+  </div>
+
+  <div class="sound-buttons">
+    <button class="btn-sound" (click)="onPlayIntro()">
+      <span class="material-icons">volume_up</span> Intro
+    </button>
+    <button class="btn-sound" (click)="toggleSound()" [title]="soundEnabled ? 'Wycisz dźwięki' : 'Włącz dźwięki'">
+      <span class="material-icons">{{ soundEnabled ? 'volume_up' : 'volume_off' }}</span> Dźwięk
+    </button>
+    <div class="sound-buttons-right">
       <button class="btn-small" (click)="decreaseFontSize()">A−</button>
       <button class="btn-small" (click)="increaseFontSize()">A+</button>
       <button class="btn-small" (click)="decreaseLayout()"><span class="material-icons">zoom_out</span></button>
       <button class="btn-small" (click)="increaseLayout()"><span class="material-icons">zoom_in</span></button>
-      <a href="/familiada/play/{{ gameId }}" target="_blank" class="btn-small">Widok graczy</a>
     </div>
   </div>
+  <hr class="section-divider">
 
   <div class="round-buttons" *ngIf="game$ | async as game">
     <button
