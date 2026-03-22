@@ -1,8 +1,14 @@
 <div class="page-panel" [style.font-size.rem]="fontSize" [ngStyle]="layoutStyles">
+  <app-breadcrumb
+    *ngIf="game$ | async as game"
+    [items]="[{label: 'Gry', route: ['/games']}, {label: game.name, route: ['/games', gameId]}, {label: 'Panel prowadzącego'}]"
+  />
   <div class="admin-header">
-    <h1 class="admin-title">{{ (game$ | async)?.name }}</h1>
+    <div class="title-with-back">
+      <a [routerLink]="['/games', gameId]" class="btn-back" title="Powrót do szczegółów gry"><span class="material-icons">chevron_left</span></a>
+      <h1 class="admin-title">{{ (game$ | async)?.name }}</h1>
+    </div>
     <div class="header-actions">
-      <a [routerLink]="['/games', gameId]" class="btn-small">Powrót</a>
       <button class="btn-small" (click)="decreaseFontSize()">A−</button>
       <button class="btn-small" (click)="increaseFontSize()">A+</button>
       <button class="btn-small" (click)="decreaseLayout()"><span class="material-icons">zoom_out</span></button>

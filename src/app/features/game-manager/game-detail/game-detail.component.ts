@@ -7,11 +7,12 @@ import { Game } from '../../../core/models/game.model';
 import { selectGameById } from '../../../core/store/games/games.selectors';
 import { GameCodecService } from '../../../core/services/game-codec.service';
 import { UrlShortenerService } from '../../../core/services/url-shortener.service';
+import { BreadcrumbComponent } from '../../../shared/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-game-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent],
   templateUrl: './game-detail.component.html',
   styleUrl: './game-detail.component.scss',
 })

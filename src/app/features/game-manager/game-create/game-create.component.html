@@ -1,4 +1,9 @@
 <div class="page-panel">
+  <app-breadcrumb
+    [items]="editId
+      ? [{label: 'Gry', route: ['/games']}, {label: editGameName ?? '…', route: ['/games', editId]}, {label: 'Edycja'}]
+      : [{label: 'Gry', route: ['/games']}, {label: 'Nowa gra'}]"
+  />
   <form [formGroup]="form" (ngSubmit)="onSave()">
 
     <div class="form-header">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BreadcrumbComponent } from '../../../shared/breadcrumb/breadcrumb.component';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -25,7 +26,7 @@ import { Game, Round } from '../../../core/models/game.model';
 @Component({
   selector: 'app-admin-game-play',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, BreadcrumbComponent],
   templateUrl: './admin-game-play.component.html',
   styleUrl: './admin-game-play.component.scss',
 })

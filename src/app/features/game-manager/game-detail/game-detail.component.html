@@ -1,10 +1,14 @@
 <div class="page-panel">
   <ng-container *ngIf="game$ | async as game; else notFound">
 
+    <app-breadcrumb [items]="[{label: 'Gry', route: ['/games']}, {label: game.name}]" />
+
     <div class="detail-header">
-      <h1 class="detail-title">{{ game.name }}</h1>
+      <div class="title-with-back">
+        <a [routerLink]="['/games']" class="btn-back" title="Powrót do listy gier"><span class="material-icons">chevron_left</span></a>
+        <h1 class="detail-title">{{ game.name }}</h1>
+      </div>
       <div class="actions">
-        <a [routerLink]="['/games']" class="btn-small">Powrót</a>
         <a [routerLink]="['/games', game.id, 'edit']" class="btn-small">Edytuj</a>
         <button
           class="btn-small btn-export"
