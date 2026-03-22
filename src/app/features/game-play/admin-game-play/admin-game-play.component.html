@@ -1,9 +1,13 @@
-<div class="page-panel">
+<div class="page-panel" [style.font-size.rem]="fontSize" [ngStyle]="layoutStyles">
   <div class="admin-header">
     <h1 class="admin-title">{{ (game$ | async)?.name }}</h1>
     <div class="header-actions">
       <a [routerLink]="['/games', gameId]" class="btn-small">Powrót</a>
-      <a href="/play/{{ gameId }}" target="_blank" class="btn-small">Widok graczy</a>
+      <button class="btn-small" (click)="decreaseFontSize()">A−</button>
+      <button class="btn-small" (click)="increaseFontSize()">A+</button>
+      <button class="btn-small" (click)="decreaseLayout()"><span class="material-icons">zoom_out</span></button>
+      <button class="btn-small" (click)="increaseLayout()"><span class="material-icons">zoom_in</span></button>
+      <a href="/familiada/play/{{ gameId }}" target="_blank" class="btn-small">Widok graczy</a>
     </div>
   </div>
 
@@ -43,77 +47,90 @@
     </ng-container>
   </ng-container>
 
+  <div class="teams-panel">
+  <div class="round-section"
+       *ngIf="{ p: (penaltyPoints$ | async)!, n: (teamNames$ | async)! } as vm">
+    <div class="penalties-layout">
+      <div class="penalty-team">
+        <div class="penalty-control">
+          <button class="btn-small" (click)="onAddPenalty(displayedIndices[0])"
+                  [disabled]="vm.p[displayedIndices[0]] === 3">+</button>
+          <div class="x-marks-row">
+            <button class="btn-small" (click)="onRemovePenalty(displayedIndices[0])"
+                    [disabled]="vm.p[displayedIndices[0]] === 0">−</button>
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[0]] > 0">✕</span>
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[0]] > 1">✕</span>
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[0]] > 2">✕</span>
+          </div>
+        </div>
+      </div>
+      <div class="penalty-team penalty-team--right">
+        <div class="penalty-control">
+          <button class="btn-small" (click)="onAddPenalty(displayedIndices[1])"
+                  [disabled]="vm.p[displayedIndices[1]] === 3">+</button>
+          <div class="x-marks-row">
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[1]] > 0">✕</span>
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[1]] > 1">✕</span>
+            <span class="x-mark" [class.x-mark--active]="vm.p[displayedIndices[1]] > 2">✕</span>
+            <button class="btn-small" (click)="onRemovePenalty(displayedIndices[1])"
+                    [disabled]="vm.p[displayedIndices[1]] === 0">−</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="round-section">
     <div class="teams-layout"
          *ngIf="{ n: (teamNames$ | async)!, p: (penaltyPoints$ | async)!, s: (teamScores$ | async)!, pool: (roundPool$ | async)! } as vm">
 
-      <div class="team-control">
-        <label class="team-label">Drużyna {{ displayedIndices[0] + 1 }}</label>
-        <input class="team-name-input"
-               [value]="vm.n[displayedIndices[0]]"
-               #nameInputL
-               (blur)="onSetTeamName(displayedIndices[0], nameInputL.value)"
-               (keydown.enter)="onSetTeamName(displayedIndices[0], nameInputL.value); nameInputL.blur()"
-               placeholder="Nazwa drużyny" />
-        <div class="penalty-control">
-          <span class="penalty-label">Błędy: {{ vm.p[displayedIndices[0]] }}/3</span>
-          <button class="btn-small" (click)="onRemovePenalty(displayedIndices[0])"
-                  [disabled]="vm.p[displayedIndices[0]] === 0">−</button>
-          <button class="btn-small" (click)="onAddPenalty(displayedIndices[0])"
-                  [disabled]="vm.p[displayedIndices[0]] === 3">+</button>
-        </div>
-        <input class="team-score-input"
-               type="number"
-               [value]="vm.s[displayedIndices[0]]"
-               #scoreInputL
-               (blur)="onSetTeamScore(displayedIndices[0], scoreInputL.value)"
-               (keydown.enter)="onSetTeamScore(displayedIndices[0], scoreInputL.value); scoreInputL.blur()"
-               min="0" />
-      </div>
+      <!-- row 1: names + swap -->
+      <input class="team-name-input"
+             [value]="vm.n[displayedIndices[0]]"
+             #nameInputL
+             (blur)="onSetTeamName(displayedIndices[0], nameInputL.value)"
+             (keydown.enter)="onSetTeamName(displayedIndices[0], nameInputL.value); nameInputL.blur()"
+             placeholder="Nazwa drużyny" />
+      <span></span>
+      <button class="btn-swap" (click)="swapTeams()" title="Zamień strony">⇄</button>
+      <span></span>
+      <input class="team-name-input"
+             [value]="vm.n[displayedIndices[1]]"
+             #nameInputR
+             (blur)="onSetTeamName(displayedIndices[1], nameInputR.value)"
+             (keydown.enter)="onSetTeamName(displayedIndices[1], nameInputR.value); nameInputR.blur()"
+             placeholder="Nazwa drużyny" />
 
-      <div class="teams-middle">
-        <button class="btn-swap" (click)="swapTeams()" title="Zamień strony">⇄</button>
-        <div class="pool-box">
-          <span class="pool-label">Pula rundy</span>
-          <span class="pool-value">{{ vm.pool }} pkt</span>
-          <div class="pool-award-buttons">
-            <button class="btn-award"
-                    (click)="onAwardPool(displayedIndices[0])"
-                    [disabled]="!vm.pool"
-                    title="Przyznaj lewej drużynie">◄</button>
-            <button class="btn-award"
-                    (click)="onAwardPool(displayedIndices[1])"
-                    [disabled]="!vm.pool"
-                    title="Przyznaj prawej drużynie">►</button>
-          </div>
-        </div>
+      <!-- row 2: scores + award buttons + pool -->
+      <input class="team-score-input"
+             type="number"
+             [value]="vm.s[displayedIndices[0]]"
+             #scoreInputL
+             (blur)="onSetTeamScore(displayedIndices[0], scoreInputL.value)"
+             (keydown.enter)="onSetTeamScore(displayedIndices[0], scoreInputL.value); scoreInputL.blur()"
+             min="0" />
+      <button class="btn-award"
+              (click)="onAwardPool(displayedIndices[0])"
+              [disabled]="!vm.pool"
+              title="Przyznaj lewej drużynie">◄</button>
+      <div class="pool-box">
+        <span class="pool-label">Pula rundy</span>
+        <span class="pool-value">{{ vm.pool }}</span>
       </div>
-
-      <div class="team-control">
-        <label class="team-label">Drużyna {{ displayedIndices[1] + 1 }}</label>
-        <input class="team-name-input"
-               [value]="vm.n[displayedIndices[1]]"
-               #nameInputR
-               (blur)="onSetTeamName(displayedIndices[1], nameInputR.value)"
-               (keydown.enter)="onSetTeamName(displayedIndices[1], nameInputR.value); nameInputR.blur()"
-               placeholder="Nazwa drużyny" />
-        <div class="penalty-control">
-          <span class="penalty-label">Błędy: {{ vm.p[displayedIndices[1]] }}/3</span>
-          <button class="btn-small" (click)="onRemovePenalty(displayedIndices[1])"
-                  [disabled]="vm.p[displayedIndices[1]] === 0">−</button>
-          <button class="btn-small" (click)="onAddPenalty(displayedIndices[1])"
-                  [disabled]="vm.p[displayedIndices[1]] === 3">+</button>
-        </div>
-        <input class="team-score-input"
-               type="number"
-               [value]="vm.s[displayedIndices[1]]"
-               #scoreInputR
-               (blur)="onSetTeamScore(displayedIndices[1], scoreInputR.value)"
-               (keydown.enter)="onSetTeamScore(displayedIndices[1], scoreInputR.value); scoreInputR.blur()"
-               min="0" />
-      </div>
+      <button class="btn-award"
+              (click)="onAwardPool(displayedIndices[1])"
+              [disabled]="!vm.pool"
+              title="Przyznaj prawej drużynie">►</button>
+      <input class="team-score-input"
+             type="number"
+             [value]="vm.s[displayedIndices[1]]"
+             #scoreInputR
+             (blur)="onSetTeamScore(displayedIndices[1], scoreInputR.value)"
+             (keydown.enter)="onSetTeamScore(displayedIndices[1], scoreInputR.value); scoreInputR.blur()"
+             min="0" />
 
     </div>
+  </div>
   </div>
 
 

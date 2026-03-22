@@ -43,6 +43,26 @@ export class AdminGamePlayComponent implements OnInit {
   roundPool$!: Observable<number>;
 
   swapped = false;
+  fontSize = 1;
+  layoutScale = 1;
+
+  increaseFontSize(): void { this.fontSize = Math.min(+(this.fontSize + 0.1).toFixed(1), 2); }
+  decreaseFontSize(): void { this.fontSize = Math.max(+(this.fontSize - 0.1).toFixed(1), 0.5); }
+
+  increaseLayout(): void { this.layoutScale = Math.min(+(this.layoutScale + 0.1).toFixed(1), 1.5); }
+  decreaseLayout(): void { this.layoutScale = Math.max(+(this.layoutScale - 0.1).toFixed(1), 0.5); }
+
+  get layoutStyles(): Record<string, string> {
+    const s = this.layoutScale;
+    return {
+      '--section-gap': `${1.2 * s}rem`,
+      '--teams-gap': `${1.2 * s}rem`,
+      '--layout-row-h': `${29 * s}px`,
+      '--spacing-sm': `${6 * s}px`,
+      '--spacing-md': `${13 * s}px`,
+      '--spacing-lg': `${19 * s}px`,
+    };
+  }
 
   get displayedIndices(): [0 | 1, 0 | 1] {
     return this.swapped ? [1, 0] : [0, 1];
