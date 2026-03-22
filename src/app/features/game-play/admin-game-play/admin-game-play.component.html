@@ -1,4 +1,4 @@
-<div class="page-panel" [style.font-size.rem]="fontSize" [ngStyle]="layoutStyles">
+<div class="page-panel" [style.zoom]="zoom">
   <app-breadcrumb
     *ngIf="game$ | async as game"
     [items]="[{label: 'Gry', route: ['/games']}, {label: game.name, route: ['/games', gameId]}, {label: 'Panel prowadzącego'}]"
@@ -21,10 +21,9 @@
       <span class="material-icons">{{ soundEnabled ? 'volume_up' : 'volume_off' }}</span> Dźwięk
     </button>
     <div class="sound-buttons-right">
-      <button class="btn-small" (click)="decreaseFontSize()">A−</button>
-      <button class="btn-small" (click)="increaseFontSize()">A+</button>
-      <button class="btn-small" (click)="decreaseLayout()"><span class="material-icons">zoom_out</span></button>
-      <button class="btn-small" (click)="increaseLayout()"><span class="material-icons">zoom_in</span></button>
+      <button class="btn-small" (click)="decreaseZoom()"><span class="material-icons">zoom_out</span></button>
+      <span class="zoom-label">{{ (zoom * 100).toFixed(0) }}%</span>
+      <button class="btn-small" (click)="increaseZoom()"><span class="material-icons">zoom_in</span></button>
     </div>
   </div>
   <hr class="section-divider">

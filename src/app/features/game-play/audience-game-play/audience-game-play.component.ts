@@ -42,6 +42,11 @@ export class AudienceGamePlayComponent implements OnInit {
   teamScores$!: Observable<[number, number]>;
   roundPool$!: Observable<number>;
 
+  zoom = 1;
+
+  increaseZoom(): void { this.zoom = Math.min(+(this.zoom + 0.1).toFixed(1), 3); }
+  decreaseZoom(): void { this.zoom = Math.max(+(this.zoom - 0.1).toFixed(1), 0.1); }
+
   constructor(
     private route: ActivatedRoute,
     private store: Store,
