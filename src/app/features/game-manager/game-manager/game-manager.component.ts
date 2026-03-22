@@ -4,11 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectAllGames } from '../../../core/store/games/games.selectors';
 import { deleteGame } from '../../../core/store/games/games.actions';
+import { BreadcrumbComponent } from '../../../shared/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-game-manager',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BreadcrumbComponent],
   templateUrl: './game-manager.component.html',
   styleUrl: './game-manager.component.scss',
 })

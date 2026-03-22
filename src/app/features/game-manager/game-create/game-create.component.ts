@@ -7,11 +7,12 @@ import { take } from 'rxjs/operators';
 import { addGame, updateGame } from '../../../core/store/games/games.actions';
 import { selectGameById } from '../../../core/store/games/games.selectors';
 import { Game, Round, Answer } from '../../../core/models/game.model';
+import { BreadcrumbComponent } from '../../../shared/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-game-create',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, BreadcrumbComponent],
   templateUrl: './game-create.component.html',
   styleUrl: './game-create.component.scss',
 })
@@ -22,6 +23,7 @@ export class GameCreateComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   editId: string | null = null;
+  editGameName: string | null = null;
 
   form: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -42,6 +44,7 @@ export class GameCreateComponent implements OnInit {
       this.store.select(selectGameById(this.editId)).pipe(take(1)).subscribe(game => {
         if (game) {
           this._cachedGame = game;
+          this.editGameName = game.name;
           this.fillForm(game);
         }
       });

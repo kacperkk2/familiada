@@ -1,0 +1,12 @@
+<nav class="breadcrumb" *ngIf="items.length > 0">
+  @for (item of items; track item.label; let last = $last) {
+    @if (!last && item.route) {
+      <a [routerLink]="item.route" class="breadcrumb-link">{{ item.label }}</a>
+    } @else {
+      <span [class.breadcrumb-current]="last">{{ item.label }}</span>
+    }
+    @if (!last) {
+      <span class="breadcrumb-sep">›</span>
+    }
+  }
+</nav>

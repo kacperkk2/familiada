@@ -151,3 +151,34 @@ input[type='number'] {
     border-color: var(--color-danger);
   }
 }
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+
+  .material-icons { font-size: 1.4rem; line-height: 1; }
+
+  &:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.title-with-back {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 0;
+  margin-right: var(--spacing-md);
+}
