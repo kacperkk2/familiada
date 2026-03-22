@@ -45,7 +45,7 @@ export class AdminGamePlayComponent implements OnInit {
 
   swapped = false;
   fontSize = 1;
-  layoutScale = 1;
+  layoutScale = 0.8;
   soundEnabled = true;
 
   toggleSound(): void {
@@ -69,7 +69,7 @@ export class AdminGamePlayComponent implements OnInit {
   decreaseFontSize(): void { this.fontSize = Math.max(+(this.fontSize - 0.1).toFixed(1), 0.5); }
 
   increaseLayout(): void { this.layoutScale = Math.min(+(this.layoutScale + 0.1).toFixed(1), 1.5); }
-  decreaseLayout(): void { this.layoutScale = Math.max(+(this.layoutScale - 0.1).toFixed(1), 0.5); }
+  decreaseLayout(): void { this.layoutScale = Math.max(+(this.layoutScale - 0.1).toFixed(1), 0.1); }
 
   get layoutStyles(): Record<string, string> {
     const s = this.layoutScale;
