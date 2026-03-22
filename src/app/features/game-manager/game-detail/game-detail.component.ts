@@ -35,7 +35,7 @@ export class GameDetailComponent implements OnInit {
     this.copiedState = 'copying';
     try {
       const phrase = await this.codec.encode(game);
-      const longUrl = `${location.origin}/familiada/import?data=${phrase}`;
+      const longUrl = `${location.origin}/import?data=${phrase}`;
       this.urlShortener.getShortUrl(longUrl).subscribe(res => {
         const toCopy = res?.shorturl ?? longUrl;
         navigator.clipboard.writeText(toCopy)
