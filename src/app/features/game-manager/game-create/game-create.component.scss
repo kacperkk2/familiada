@@ -75,6 +75,35 @@
   margin-bottom: 8px;
 }
 
+.round-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.btn-move-round {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  color: var(--color-text);
+  font-size: 0.65rem;
+  cursor: pointer;
+  font-family: var(--font-family);
+  padding: 3px 7px;
+  line-height: 1;
+  transition: all 0.15s ease;
+
+  &:not(:disabled):hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
+}
+
 .round-label {
   font-size: 0.78rem;
   color: var(--color-accent);

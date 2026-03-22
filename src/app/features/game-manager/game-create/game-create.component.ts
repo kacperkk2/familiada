@@ -84,6 +84,14 @@ export class GameCreateComponent implements OnInit {
     this.rounds.push(this.createRound());
   }
 
+  moveRound(index: number, direction: -1 | 1): void {
+    const target = index + direction;
+    if (target < 0 || target >= this.rounds.length) return;
+    const round = this.rounds.at(index);
+    this.rounds.removeAt(index);
+    this.rounds.insert(target, round);
+  }
+
   removeRound(index: number): void {
     if (this.rounds.length > 1) {
       this.rounds.removeAt(index);

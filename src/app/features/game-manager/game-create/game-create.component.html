@@ -21,9 +21,13 @@
 
         <div class="round-header">
           <p class="round-label">Runda {{ ri + 1 }}</p>
-          <button type="button" class="btn-remove-round" (click)="removeRound(ri)" [disabled]="rounds.length === 1">
-            Usuń rundę
-          </button>
+          <div class="round-actions">
+            <button type="button" class="btn-move-round" (click)="moveRound(ri, -1)" [disabled]="ri === 0" title="Przesuń w górę">▲</button>
+            <button type="button" class="btn-move-round" (click)="moveRound(ri, 1)" [disabled]="ri === rounds.length - 1" title="Przesuń w dół">▼</button>
+            <button type="button" class="btn-remove-round" (click)="removeRound(ri)" [disabled]="rounds.length === 1">
+              Usuń rundę
+            </button>
+          </div>
         </div>
 
         <input type="text" formControlName="question" placeholder="Treść pytania…" class="question-input" />
