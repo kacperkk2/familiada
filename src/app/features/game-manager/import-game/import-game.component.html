@@ -1,38 +1,38 @@
 <div class="page-panel">
 
-  <div *ngIf="isDecoding" class="section-card decoding-state">
+  <div *ngIf="isDecoding" class="decoding-state">
     <p>Dekodowanie…</p>
   </div>
 
-  <div *ngIf="!isDecoding && decodeError" class="section-card error-state">
+  <div *ngIf="!isDecoding && decodeError" class="error-state">
     <p class="error-message">{{ decodeError }}</p>
     <a [routerLink]="['/games']" class="btn-small">Wróć do gier</a>
   </div>
 
   <ng-container *ngIf="!isDecoding && previewGame as game">
-    <div class="section-card">
-      <div class="import-header">
-        <h1>{{ game.name }}</h1>
+
+    <div class="detail-header">
+      <div class="title-row">
+        <h1 class="detail-title">{{ game.name }}</h1>
         <span class="import-badge">Import</span>
       </div>
-      <p class="import-hint">Sprawdź dane gry przed importem.</p>
+      <div class="actions">
+        <button class="btn-small btn-danger" (click)="reject()">Odrzuć</button>
+        <button class="btn-primary" (click)="importGame()">Importuj grę</button>
+      </div>
     </div>
 
-    <div *ngFor="let round of game.rounds; let i = index" class="section-card">
-      <h2>Runda {{ i + 1 }}</h2>
+    <div *ngFor="let round of game.rounds; let i = index" class="round-section">
+      <p class="round-label">Runda {{ i + 1 }}</p>
       <p class="question-text">{{ round.question }}</p>
       <ul class="answer-list">
-        <li *ngFor="let answer of round.answers" class="answer-row">
+        <li *ngFor="let answer of round.answers" class="answer-item">
           <span class="answer-text">{{ answer.text }}</span>
           <span class="answer-points">{{ answer.points }} pkt</span>
         </li>
       </ul>
     </div>
 
-    <div class="section-card import-actions">
-      <button class="btn-primary" (click)="importGame()">Importuj grę</button>
-      <button class="btn-small btn-danger" (click)="reject()">Odrzuć</button>
-    </div>
   </ng-container>
 
 </div>
