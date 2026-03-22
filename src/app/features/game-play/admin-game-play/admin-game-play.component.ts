@@ -46,6 +46,24 @@ export class AdminGamePlayComponent implements OnInit {
   swapped = false;
   fontSize = 1;
   layoutScale = 1;
+  soundEnabled = true;
+
+  toggleSound(): void {
+    this.soundEnabled = !this.soundEnabled;
+  }
+
+  private playSound(path: string, gain = 1): void {
+    if (this.soundEnabled) {
+      const audio = new Audio(path);
+      const ctx = new AudioContext();
+      const source = ctx.createMediaElementSource(audio);
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = gain;
+      source.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      audio.play();
+    }
+  }
 
   increaseFontSize(): void { this.fontSize = Math.min(+(this.fontSize + 0.1).toFixed(1), 2); }
   decreaseFontSize(): void { this.fontSize = Math.max(+(this.fontSize - 0.1).toFixed(1), 0.5); }
@@ -90,7 +108,12 @@ export class AdminGamePlayComponent implements OnInit {
     this.roundPool$ = this.store.select(selectRoundPool);
   }
 
+  onPlayIntro(): void {
+    this.playSound('assets/sounds/intro.mp3', 3.0);
+  }
+
   onStartRound(index: number): void {
+    this.playSound('assets/sounds/round.mp3', 0.4);
     this.store.dispatch(startRound({ gameId: this.gameId, roundIndex: index }));
   }
 
@@ -99,6 +122,9 @@ export class AdminGamePlayComponent implements OnInit {
   }
 
   onToggleAnswer(answerId: string, points: number, isRevealed: boolean): void {
+    if (!isRevealed) {
+      this.playSound('assets/sounds/correct.mp3', 1.2);
+    }
     this.store.dispatch(isRevealed ? hideAnswer({ answerId, points }) : revealAnswer({ answerId, points }));
   }
 
@@ -107,6 +133,7 @@ export class AdminGamePlayComponent implements OnInit {
   }
 
   onAddPenalty(teamIndex: 0 | 1): void {
+    this.playSound('assets/sounds/wrong.mp3');
     this.store.dispatch(addPenaltyPoint({ teamIndex }));
   }
 
