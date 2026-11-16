@@ -33,6 +33,14 @@ Przenoszenie gier odbywa się za pomocą linków:
 
 W ten sposób można udostępniać i przenosić dowolne przygotowane zestawy pytań bez potrzeby korzystania z serwera, kont użytkowników czy przesyłania plików.
 
+## Przykładowa gra
+
+Chcesz zobaczyć, jak wygląda gotowa gra? Możesz zaimportować przykładowy zestaw pytań, otwierając poniższy link:
+
+**[Zaimportuj przykładową grę](https://kacperkk2.github.io/familiada/import?data=ZZNLbttADIavQszaECo7r3pTNC5axEECI0k3bbJgRoxLjzJU9cDAE3gjpIdwe4weoda9CsXSuE5XAj5SJP9_yCdl1VhdiiOID6I4joZHIImGUXx4qAYqV-OvT-q7GqsvTKlYAoe5XzqBuZTi0BIkAnLPmFRqoPAlvVRjdZqLqZpaDVSmxqM3q8EWf8RCUoNQ-AxznEfb-PCgj08qw5Zxi-OAP-VSeDIdjnt87TO22OG3PT3NK1NQaroqx6u7NtJq-JyyRtB-uaC5AD8yWUZwy6LcrLNqQeAgk7TQBBYX2m_WzS_NtNgTNo1gxk1dVElhmObyWsFNBOfS_lcV3nAXDfrfR3DB2jA51r6XedJHp2gRMnRNjXB29tqEaQTXTS0O9T-Nd2ZctI2tZPal_mIbPtmJv_KkvTjLBjwaaZ61F7sEi3CrLJtbtSdzxn9-55Y7b4eHwfJ2gh0P3SceFwHHxz2-FL2jo55ebdba73hw54NnsoEf7WafCLhlU29-aI-Fh0wSMGKZNCSW8d3e5M1Px1g2df8yYS9uKCXHXvL_noxSehDbTRPyz-Uxq0rq0uNhz2fiGBPZbk-_e2HUGUtB1iB4KjJp6gruq6Td-OohpRz3jwRTcBG0E2_W5VJ_21Y7CIZM22MZwMunO6Vg7Q0aJijRhlVoDbtb_QU)
+
+Po otwarciu linku wystarczy wybrać opcję importowania gry. Zestaw zostanie dodany do Twojej listy gier.
+
 ## Co oferuje?
 
 - **Tworzenie własnych gier** – dowolna liczba rund, pytań i odpowiedzi wraz z przypisanymi punktami.
